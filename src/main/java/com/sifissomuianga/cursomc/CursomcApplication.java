@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.sifissomuianga.cursomc.domain.Categoria;
+import com.sifissomuianga.cursomc.domain.Cidade;
+import com.sifissomuianga.cursomc.domain.Estado;
 import com.sifissomuianga.cursomc.domain.Produto;
 import com.sifissomuianga.cursomc.repositories.CategoriaRepository;
+import com.sifissomuianga.cursomc.repositories.CidadeRepository;
+import com.sifissomuianga.cursomc.repositories.EstadoRepository;
 import com.sifissomuianga.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -19,6 +23,10 @@ public class CursomcApplication implements CommandLineRunner{
 	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	@Autowired
+	private EstadoRepository estadoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -40,9 +48,22 @@ public class CursomcApplication implements CommandLineRunner{
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat2));
 		
-		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
+		Estado distrito1 = new Estado(null, "Boane");
+		Estado distrito2 = new Estado(null, "Matola");
+		
+		Cidade c1 = new Cidade(null, "Capoane", distrito1);
+		Cidade c2 = new Cidade(null, "Belo Horizonte", distrito2);
+		Cidade c3 = new Cidade(null, "Matola Rio", distrito2);
+		
+		distrito1.getCidades().addAll(Arrays.asList(c1));
+		distrito2.getCidades().addAll(Arrays.asList(c2, c3));
+		
+		estadoRepository.saveAll(Arrays.asList(distrito1, distrito2));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
 		
 	}
 
