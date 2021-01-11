@@ -13,6 +13,7 @@ import com.sifissomuianga.cursomc.domain.Cidade;
 import com.sifissomuianga.cursomc.domain.Cliente;
 import com.sifissomuianga.cursomc.domain.Endereco;
 import com.sifissomuianga.cursomc.domain.Estado;
+import com.sifissomuianga.cursomc.domain.ItemPedido;
 import com.sifissomuianga.cursomc.domain.Pagamento;
 import com.sifissomuianga.cursomc.domain.PagamentoComBoleto;
 import com.sifissomuianga.cursomc.domain.PagamentoComCartao;
@@ -26,6 +27,7 @@ import com.sifissomuianga.cursomc.repositories.CidadeRepository;
 import com.sifissomuianga.cursomc.repositories.ClienteRepository;
 import com.sifissomuianga.cursomc.repositories.EnderecoRepository;
 import com.sifissomuianga.cursomc.repositories.EstadoRepository;
+import com.sifissomuianga.cursomc.repositories.ItemPedidoRepository;
 import com.sifissomuianga.cursomc.repositories.PagamentoRepository;
 import com.sifissomuianga.cursomc.repositories.PedidoRepository;
 import com.sifissomuianga.cursomc.repositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class CursomcApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -106,12 +110,24 @@ public class CursomcApplication implements CommandLineRunner{
 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("01/01/2021 13:16"), null);
 		ped2.setPagamento(pagto2);
 		
-		cli1.setPedidos(Arrays.asList(ped1, ped2));
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
-		//Cliente cli2 = new Cliente(null, "Sifisso Muiaga", "sifissom@gmail.com", "110101522148M", TipoCliente.PESSOAFISICA, TipoDocumento.BILHETEDEINDENTIDADE);
+
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 3500.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 350.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 3400.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 
