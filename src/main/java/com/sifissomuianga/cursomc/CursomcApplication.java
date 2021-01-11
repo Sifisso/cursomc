@@ -9,10 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.sifissomuianga.cursomc.domain.Categoria;
 import com.sifissomuianga.cursomc.domain.Cidade;
+import com.sifissomuianga.cursomc.domain.Cliente;
+import com.sifissomuianga.cursomc.domain.Endereco;
 import com.sifissomuianga.cursomc.domain.Estado;
 import com.sifissomuianga.cursomc.domain.Produto;
+import com.sifissomuianga.cursomc.domain.enums.TipoCliente;
+import com.sifissomuianga.cursomc.domain.enums.TipoDocumento;
 import com.sifissomuianga.cursomc.repositories.CategoriaRepository;
 import com.sifissomuianga.cursomc.repositories.CidadeRepository;
+import com.sifissomuianga.cursomc.repositories.ClienteRepository;
+import com.sifissomuianga.cursomc.repositories.EnderecoRepository;
 import com.sifissomuianga.cursomc.repositories.EstadoRepository;
 import com.sifissomuianga.cursomc.repositories.ProdutoRepository;
 
@@ -27,6 +33,10 @@ public class CursomcApplication implements CommandLineRunner{
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -63,6 +73,18 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		estadoRepository.saveAll(Arrays.asList(distrito1, distrito2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Sifisso Muiaga", "sifissom@gmail.com", "110101522148M", TipoCliente.PESSOAFISICA, TipoDocumento.BILHETEDEINDENTIDADE);
+		cli1.getTelefones().addAll(Arrays.asList("847880867", "845868327"));
+		Endereco e1 = new Endereco(null, "Machava Socimol", "9", "34", cli1, c1);
+		Endereco e2 = new Endereco(null,"Tchumene 2" , "20", "64", cli1, c2);
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		
+		
+		//Cliente cli2 = new Cliente(null, "Sifisso Muiaga", "sifissom@gmail.com", "110101522148M", TipoCliente.PESSOAFISICA, TipoDocumento.BILHETEDEINDENTIDADE);
 		
 		
 	}
