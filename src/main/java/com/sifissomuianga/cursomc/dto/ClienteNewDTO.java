@@ -2,12 +2,29 @@ package com.sifissomuianga.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.sifissomuianga.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Length(min = 5, max = 80, message = "O tamanho de deve ser entre 5 e 80 caracteres")
 	private String nome;
+	
+	@NotEmpty
+	@Email(message = "Email inválido")
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String email;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String numeroDeDocumento;
+	
 	private Integer tipoCliente;
 	private Integer tipoDocumento;
 	
@@ -15,7 +32,9 @@ public class ClienteNewDTO implements Serializable{
 	private String nrQuarteirao;
 	private String nrCasa;
 	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String telefone1;
+	
 	private String telefone2;
 	private String telefone3;
 	
